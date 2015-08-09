@@ -1,0 +1,7 @@
+name = HF Flickr
+description = A block module that take flickr albums.
+core = 7.x
+scripts[] = jquery.flickr.js
+scripts[] = hf_flickr.js
+stylesheets[all][] = hf_flickr.css
+configure = admin/config/content/hf_flick

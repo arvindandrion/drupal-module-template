@@ -1,0 +1,31 @@
+/*****************************************
+Flickr CSS
+*****************************************/
+#flickr {
+  margin: 0;
+  padding: 0; }
+  #flickr li {
+    display: block;
+    float: left;
+    position: relative;
+    width: 300px;
+    height: 300px; }
+  #flickr span {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 10px; }
+  #flickr a {
+    width: 300px;
+    height: 300px;
+    display: block;
+    float: left;
+    color: white;
+    -webkit-background-size: cover !important;
+    -moz-background-size: cover !important;
+    -o-background-size: cover !important;
+    background-size: cover !important; }
+
+/*# sourceMappingURL=hf_flickr.css.map */

@@ -1,0 +1,122 @@
+<?php
+
+/**
+ * Implements hook_block_info().
+ */
+function hf_flickr_block_info() {
+  $blocks['hf_flickr'] = array(
+    'info' => t('HF Flickr'),
+    'cache' => DRUPAL_CACHE_PER_ROLE,
+  );
+  return $blocks;
+}
+
+// function hf_flickr_media() {
+// 	$max_num = variable_get('hf_flickr_max', 3);
+// 	$userid_num = variable_get('hf_flickr_userid');
+// 	print "testing123";
+// }
+
+/**
+ * Implements hook_menu().
+ */
+function hf_flickr_menu() {
+  $items = array();
+
+  $items['admin/config/media/hf_flickr'] = array(
+    'title' => 'HF Flickr',
+    'description' => 'Configuration for HF Flickr module',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('hf_flickr_form'),
+    'access arguments' => array('access administration pages'),
+    'type' => MENU_NORMAL_ITEM,
+  );
+
+  return $items;
+}
+
+
+
+/**
+ * Page callback: Current posts settings
+ *
+ * @see hf_flickr_menu()
+ */
+function hf_flickr_form($form, &$form_state) {
+  $form['hf_flickr_userid'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Flickr User ID'),
+    '#default_value' => variable_get('hf_flickr_userid'),
+    '#size' => 100,
+    '#maxlength' => 100,
+    '#required' => FALSE,
+  );
+
+  $form['hf_flickr_apikey'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Flickr API Key'),
+    '#default_value' => variable_get('hf_flickr_apikey'),
+    '#size' => 100,
+    '#maxlength' => 100,
+    '#required' => FALSE,
+  );
+
+  return system_settings_form($form);
+}
+
+/**
+ * Implements hook_block_view().
+ * 
+ * Prepares the contents of the block.
+ */
+function hf_flickr_block_view($delta = '') {
+	// if (path_is_admin(current_path())){
+	// 	echo "admin";
+	// }else{
+	// 	echo "public";
+	// }
+	// Pass variable to javascript module
+	$flickrUserid = variable_get('hf_flickr_userid');
+	$flickrApikey = variable_get('hf_flickr_apikey');
+	if (!empty($flickrUserid) && !empty($flickrApikey)) {
+		drupal_add_js(array('hf_flickr' => array('flickrUserid' => $flickrUserid, 'flickrApikey' => $flickrApikey)), array('type' => 'setting'));
+	}else{
+		drupal_add_js(array('hf_flickr' => array('flickrUserid' => false, 'flickrApikey' => false)), array('type' => 'setting'));
+	}
+	
+
+	// Render flickr container
+  $block = array(
+  	'image' => array(
+  	'#prefix' => '',
+  	'#type' => 'markup',
+  	'#markup' => '<div id="my_gallery"></div>' 
+  ));
+
+	switch($delta) {
+	 case 'hf_flickr' :
+		$block['content'] = $block;
+		break;
+	}
+	return $block;
+}
+
+
+/**
+ * Implements validation from the Form API.
+ * 
+ * @param $form
+ *   A structured array containing the elements and properties of the form.
+ * @param $form_state
+ *   An array that stores information about the form's current state 
+ *   during processing.
+ */
+function hf_flickr_form_validate($form, &$form_state){
+  // $max_num = $form_state['values']['hf_flickr_max'];
+  // if (!is_numeric($max_num)){
+  //   form_set_error('hf_flickr_max', t('You must enter a number for the maximum number of posts to display.'));
+  // }
+  // elseif ($max_num <= 0){
+  //   form_set_error('hf_flickr_max', t('Maximum number of posts to display must be positive.'));
+  // }
+}
